@@ -5,7 +5,10 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon src/index.js"
+    "build": "rm -rf dist  && cp -R src dist ",
+    "dev": "nodemon src/index.js",
+    "start":"node src/index.js"
+    
   },
   "keywords": [],
   "author": "",
