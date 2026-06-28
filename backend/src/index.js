@@ -5,9 +5,11 @@ import connectDb from "./lib/db.js";
 import {clerkMiddleware} from '@clerk/express';
 import cors from "cors";
 import job from "./lib/cron.js";
+import clerkWebhook from "./webhooks/clerk.webhook.js";
 
 import fs from "fs";
 import path from "path";
+
 
 
 
@@ -19,6 +21,10 @@ const PORT = process.env.PORT;
 const FRONTEND_URL = process.env.FRONTEND_URL;
 
 const publicDir = path.join(process.cwd(), 'public');
+
+
+//this will help to parse the raw data coming from webhook by clerk
+app.use("/api/webhooks/clerk",express.raw({type:"application/json"}),clerkWebhook)
 
 app.use(clerkMiddleware());
 app.use(cors({origin:FRONTEND_URL, credentials:true}));
