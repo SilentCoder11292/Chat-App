@@ -26,6 +26,14 @@ router.post("/", async (req, res) => {
     if (evt.type === "user.created" || evt.type === "user.updated") {
       const u = evt.data;
 
+      if (!u || !u.id) {
+        console.error("Clerk Webhook Error: Missing user data or user ID", u);
+        res.status(400).json({ message: "Invalid user data in webhook payload" });
+        return;
+      }
+
+      console.log(`Processing Clerk webhook: ${evt.type} for clerkId: ${u.id}`);
+
       const email =
         u.email_addresses?.find((e) => e.id === u.primary_email_address_id)?.email_address ??
         u.email_addresses?.[0]?.email_address;
